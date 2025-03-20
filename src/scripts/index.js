@@ -1,4 +1,4 @@
-import './pages/index.css';
+import '../pages/index.css';
 
 const placesList = document.querySelector(".places__list");
 
