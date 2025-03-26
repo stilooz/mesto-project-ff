@@ -26,7 +26,7 @@ export const initialCards = [
 ];
 
 //удаление карточки через корзину
-const deleteCardHandler = (card) => {
+export const deleteCardHandler = (card) => {
   const deleteButtonCard = card.querySelector(".card__delete-button");
   deleteButtonCard.addEventListener(
     "click",
@@ -37,25 +37,28 @@ const deleteCardHandler = (card) => {
   );
 };
 
+export const setLikeHandler = (button) => {
+  button.addEventListener('click', () => {
+    button.classList.toggle('card__like-button_is-active');
+  });
+};
+
 //создание карточки
 export const createCard = (name, link, onImageClick) => {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   deleteCardHandler(card);
   const cardImage = card.querySelector('.card__image');
-
   card.querySelector(".card__title").textContent = name;
-  card.querySelector(".card__image").setAttribute("src", link);
-  card.querySelector(".card__image").setAttribute("alt", `фотография ${name}`);
+  cardImage.setAttribute("src", link);           // ← заменили
+  cardImage.setAttribute("alt", `фотография ${name}`); // ← заменили
   cardImage.addEventListener('click', () => {
     onImageClick(name, link);
   });
 
   //кнопка лайка
   const likeButton = card.querySelector('.card__like-button');
-  likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle('card__like-button_is-active');
-  })
+  setLikeHandler(likeButton);
 
   return card;
 };

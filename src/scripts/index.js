@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import { initialCards, createCard } from '../components/cards.js';
-
+import { openModal, closeModal } from '../components/modal.js';
 // переменные карточек
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
@@ -26,24 +26,13 @@ const popups = document.querySelectorAll('.popup')
 initialCards.forEach((card) =>
   placesList.append(createCard(card.name, card.link, handleCardClick)));
 
-// открытие и закрытие попапа
-function popupOpen(popup) {
-  popup.classList.add('popup_is-opened');
-}
-
-function closeOpenedPopup() {
-  const openedPopup = document.querySelector('.popup_is-opened');
-  if (openedPopup) {
-    openedPopup.classList.remove('popup_is-opened');
-  }
-}
 
 //редактирование профиля
 profileEditButton.addEventListener('click', () => {
   // заполнение текстовых полей попапа
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
-  popupOpen(popupTypeEdit);
+  openModal(popupTypeEdit);
 });
 
 formAddCard.addEventListener('submit', (evt) => {
@@ -52,29 +41,31 @@ formAddCard.addEventListener('submit', (evt) => {
   const link = cardLinkInput.value;
   const newCard = createCard(name, link, handleCardClick);
   placesList.prepend(newCard);
-  closeOpenedPopup();
+  closeModal();
   formAddCard.reset();
 });
 
 //открытие формы новой карточки
 addButton.addEventListener('click', () => {
-  popupOpen(popupAddCard)
-});
-//закрытие попапов
-popupCloseButtons.forEach((button) => {
-  button.addEventListener('click', closeOpenedPopup);
+  openModal(popupAddCard)
 });
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closeOpenedPopup();
-  }
+function handleCardClick(name, link) {
+  popupImagePicture.src = link;
+  popupImagePicture.alt = `Фотография ${name}`;
+  popupImageCaption.textContent = name;
+  openModal(popupImage);
+}
+//закрытие попапов
+popupCloseButtons.forEach((button) => {
+  button.addEventListener('click', closeModal);
 });
+
 
 popups.forEach((popup) => {
   popup.addEventListener('click', (event) => {
     if (event.target === popup) {
-      closeOpenedPopup();
+      closeModal();
     }
   });
 });
@@ -86,12 +77,6 @@ formEditProfile.addEventListener('submit', (evt) => {
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
 
-  closeOpenedPopup();
+  closeModal();
 });
 
-function handleCardClick(name, link) {
-  popupImagePicture.src = link;
-  popupImagePicture.alt = `Фотография ${name}`;
-  popupImageCaption.textContent = name;
-  popupOpen(popupImage);
-}
