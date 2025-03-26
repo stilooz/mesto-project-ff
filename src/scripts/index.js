@@ -6,6 +6,11 @@ const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
 const cardLinkInput = document.querySelector('.popup__input_type_url');
+const addButton = document.querySelector('.profile__add-button');
+const popupAddButton = document.querySelector('.popup_type_new-card');
+const popupImage = document.querySelector('.popup_type_image');
+const popupImagePicture = document.querySelector('.popup__image');
+const popupImageCaption = document.querySelector('.popup__caption');
 // работа с текстом внутри попапа карандаш
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -15,7 +20,7 @@ const formEditProfile = document.forms['edit-profile']
 // переменные открытия попапа
 const profileEditButton = document.querySelector('.profile__edit-button');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
-const popupCloseButton = document.querySelector('.popup__close')
+const popupCloseButtons = document.querySelectorAll('.popup__close')
 const popups = document.querySelectorAll('.popup')
 
 initialCards.forEach((card) =>
@@ -34,6 +39,7 @@ function closeOpenedPopup() {
   }
 }
 
+//редактирование профиля
 profileEditButton.addEventListener('click', () => {
   // заполнение текстовых полей попапа
   nameInput.value = profileTitle.textContent;
@@ -41,7 +47,26 @@ profileEditButton.addEventListener('click', () => {
   popupOpen(popupTypeEdit);
 });
 
-popupCloseButton.addEventListener('click', closeOpenedPopup);
+formAddCard.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const name = cardNameInput.value;
+  const link = cardLinkInput.value;
+  const newCard = createCard(name, link);
+  placesList.prepend(newCard);
+  closeOpenedPopup();
+  formAddCard.reset();
+});
+
+
+
+//открытие формы новой карточки
+addButton.addEventListener('click', () => {
+  popupOpen(popupAddButton)
+});
+//закрытие попапов
+popupCloseButtons.forEach((button) => {
+  button.addEventListener('click', closeOpenedPopup);
+});
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
@@ -66,3 +91,4 @@ formEditProfile.addEventListener('submit', (evt) => {
 
   closeOpenedPopup();
 });
+
