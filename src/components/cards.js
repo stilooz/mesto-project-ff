@@ -38,14 +38,18 @@ const deleteCardHandler = (card) => {
 };
 
 //создание карточки
-export const createCard = (name, link) => {
+export const createCard = (name, link, onImageClick) => {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   deleteCardHandler(card);
+  const cardImage = card.querySelector('.card__image');
 
   card.querySelector(".card__title").textContent = name;
   card.querySelector(".card__image").setAttribute("src", link);
   card.querySelector(".card__image").setAttribute("alt", `фотография ${name}`);
+  cardImage.addEventListener('click', () => {
+    onImageClick(name, link);
+  });
 
   //кнопка лайка
   const likeButton = card.querySelector('.card__like-button');

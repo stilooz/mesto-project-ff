@@ -24,8 +24,7 @@ const popupCloseButtons = document.querySelectorAll('.popup__close')
 const popups = document.querySelectorAll('.popup')
 
 initialCards.forEach((card) =>
-  placesList.append(createCard(card.name, card.link))
-);
+  placesList.append(createCard(card.name, card.link, handleCardClick)));
 
 // открытие и закрытие попапа
 function popupOpen(popup) {
@@ -51,13 +50,10 @@ formAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const name = cardNameInput.value;
   const link = cardLinkInput.value;
-  const newCard = createCard(name, link);
-  placesList.prepend(newCard);
+  const newCard = createCard(name, link, handleCardClick);
   closeOpenedPopup();
   formAddCard.reset();
 });
-
-
 
 //открытие формы новой карточки
 addButton.addEventListener('click', () => {
@@ -92,3 +88,9 @@ formEditProfile.addEventListener('submit', (evt) => {
   closeOpenedPopup();
 });
 
+function handleCardClick(name, link) {
+  popupImagePicture.src = link;
+  popupImagePicture.alt = `Фотография ${name}`;
+  popupImageCaption.textContent = name;
+  popupOpen(popupImage);
+}
