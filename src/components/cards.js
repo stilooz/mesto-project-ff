@@ -25,6 +25,7 @@ export const initialCards = [
   }
 ];
 
+//удаление карточки через корзину
 const deleteCardHandler = (card) => {
   const deleteButtonCard = card.querySelector(".card__delete-button");
   deleteButtonCard.addEventListener(
@@ -36,6 +37,7 @@ const deleteCardHandler = (card) => {
   );
 };
 
+//создание карточки
 export const createCard = (name, link) => {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.querySelector(".card").cloneNode(true);
@@ -45,5 +47,12 @@ export const createCard = (name, link) => {
   card.querySelector(".card__image").setAttribute("src", link);
   card.querySelector(".card__image").setAttribute("alt", `фотография ${name}`);
 
+  //кнопка лайка
+  const likeButton = card.querySelector('.card__like-button');
+  likeButton.addEventListener('click', () => {
+    likeButton.classList.toggle('card__like-button_is-active');
+  })
+
   return card;
 };
+
