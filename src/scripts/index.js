@@ -26,7 +26,6 @@ const popups = document.querySelectorAll('.popup')
 initialCards.forEach((card) =>
   placesList.append(createCard(card.name, card.link, handleCardClick)));
 
-
 //редактирование профиля
 profileEditButton.addEventListener('click', () => {
   // заполнение текстовых полей попапа

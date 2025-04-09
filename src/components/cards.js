@@ -50,8 +50,8 @@ export const createCard = (name, link, onImageClick) => {
   deleteCardHandler(card);
   const cardImage = card.querySelector('.card__image');
   card.querySelector(".card__title").textContent = name;
-  cardImage.setAttribute("src", link);           // ← заменили
-  cardImage.setAttribute("alt", `фотография ${name}`); // ← заменили
+  cardImage.setAttribute("src", link);
+  cardImage.setAttribute("alt", `фотография ${name}`);
   cardImage.addEventListener('click', () => {
     onImageClick(name, link);
   });
