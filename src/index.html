@@ -29,6 +29,7 @@
 					></div>
 					<div class="profile__info">
 						<h1 class="profile__title">Жак-Ив Кусто</h1>
+						<!-- кнопка валидации формы -->
 						<button
 							class="profile__edit-button"
 							type="button"
@@ -59,19 +60,29 @@
 						name="edit-profile"
 					>
 						<input
+							id="name-input"
 							type="text"
 							name="name"
 							class="popup__input popup__input_type_name"
 							placeholder="Имя"
 							required
 						/>
+						<span
+							class="popup__error"
+							id="'name-input-error"
+						></span>
 						<input
+							id="description-input"
 							type="text"
 							name="description"
 							class="popup__input popup__input_type_description"
 							placeholder="Занятие"
 							required
 						/>
+						<span
+							class="popup__error"
+							id="description-input-error"
+						></span>
 						<button
 							type="submit"
 							class="button popup__button"
