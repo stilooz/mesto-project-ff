@@ -93,3 +93,22 @@ function hideInputError(formElement, inputElement, config) {
   errorElement.textContent = '';
   errorElement.classList.remove(config.errorClass);
 }
+
+//проверка валидности введенного текста
+function isValid(formElement, inputElement, config) {
+  const regex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
+
+  if (inputElement.name === 'name' || inputElement.name === 'about') {
+    if (!regex.test(inputElement.value)) {
+      inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+    } else {
+      inputElement.setCustomValidity('');
+    }
+  }
+
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage, config);
+  } else {
+    hideInputError(formElement, inputElement, config);
+  }
+}
