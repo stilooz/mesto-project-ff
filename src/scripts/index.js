@@ -111,4 +111,18 @@ function isValid(formElement, inputElement, config) {
   } else {
     hideInputError(formElement, inputElement, config);
   }
-}
+};
+
+//отключение кнопки
+function toggleButtonState(inputList, buttonElement, config) {
+  const hasInvalidInput = inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+  if (hasInvalidInput) {
+    buttonElement.classList.add(config.inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove(config.inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+};
