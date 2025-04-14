@@ -2,15 +2,6 @@ import '../pages/index.css';
 import { initialCards, createCard } from '../components/cards.js';
 import { openModal, closeModal } from '../components/modal.js';
 
-// enableValidation({
-//   formSelector: '.popup__form',
-//   inputSelector: '.popup__input',
-//   submitButtonSelector: '.popup__button',
-//   inactiveButtonClass: 'popup__button_disabled',
-//   inputErrorClass: 'popup__input_type_error',
-//   errorClass: 'popup__error_visible'
-// });
-
 // переменные карточек
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
@@ -56,7 +47,7 @@ formAddCard.addEventListener('submit', (evt) => {
 
 //открытие формы новой карточки
 addButton.addEventListener('click', () => {
-  openModal(popupAddCard)
+  openModal(popupAddCard);
 });
 
 function handleCardClick(name, link) {
@@ -108,7 +99,7 @@ function hideInputError(formElement, inputElement, config) {
 function isValid(formElement, inputElement, config) {
   const regex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
 
-  if (inputElement.name === 'name' || inputElement.name === 'about') {
+  if (inputElement.name === 'name' || inputElement.name === 'description') {
     if (!regex.test(inputElement.value)) {
       inputElement.setCustomValidity(inputElement.dataset.errorMessage);
     } else {
@@ -149,3 +140,23 @@ function setEventListeners(formElement, config) {
     });
   });
 };
+
+function enableValidation(config) {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement, config);
+  });
+};
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});
