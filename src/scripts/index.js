@@ -1,6 +1,16 @@
 import '../pages/index.css';
 import { initialCards, createCard } from '../components/cards.js';
 import { openModal, closeModal } from '../components/modal.js';
+
+// enableValidation({
+//   formSelector: '.popup__form',
+//   inputSelector: '.popup__input',
+//   submitButtonSelector: '.popup__button',
+//   inactiveButtonClass: 'popup__button_disabled',
+//   inputErrorClass: 'popup__input_type_error',
+//   errorClass: 'popup__error_visible'
+// });
+
 // переменные карточек
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
@@ -85,14 +95,14 @@ function showInputError(formElement, inputElement, errorMessage, config) {
   inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(config.errorClass);
-}
+};
 
 function hideInputError(formElement, inputElement, config) {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
   inputElement.classList.remove(config.inputErrorClass);
   errorElement.textContent = '';
   errorElement.classList.remove(config.errorClass);
-}
+};
 
 //проверка валидности введенного текста
 function isValid(formElement, inputElement, config) {
@@ -125,4 +135,17 @@ function toggleButtonState(inputList, buttonElement, config) {
     buttonElement.classList.remove(config.inactiveButtonClass);
     buttonElement.disabled = false;
   }
+};
+
+function setEventListeners(formElement, config) {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
+
+  toggleButtonState(inputList, buttonElement, config);
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      isValid(formElement, inputElement, config);
+      toggleButtonState(inputList, buttonElement, config);
+    });
+  });
 };
