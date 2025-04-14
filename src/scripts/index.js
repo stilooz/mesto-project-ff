@@ -8,6 +8,8 @@ import {
   showInputError,
   hideInputError
 } from '../components/validation.js';
+import { getUserInfo } from '../components/api.js';
+import { getInitialCards } from '../components/api.js';
 // переменные карточек
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
@@ -123,3 +125,24 @@ enableValidation({
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 });
+
+getUserInfo()
+  .then(data => {
+    profileTitle.textContent = data.name;
+    profileDescription.textContent = data.about;
+    document.querySelector('.profile__image').style.backgroundImage = `url(${data.avatar})`;
+  })
+  .catch(err => {
+    console.error('Ошибка при загрузке данных пользователя:', err);
+  });
+
+getInitialCards()
+  .then(cards => {
+    cards.forEach(card => {
+      const cardElement = createCard(card.name, card.link, handleCardClick);
+      placesList.append(cardElement);
+    });
+  })
+  .catch(err => {
+    console.error('Ошибка при загрузке карточек:', err);
+  });
