@@ -29,9 +29,24 @@ initialCards.forEach((card) =>
 
 //редактирование профиля
 profileEditButton.addEventListener('click', () => {
-  // заполнение текстовых полей попапа
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+
+  const inputList = Array.from(formEditProfile.querySelectorAll('.popup__input'));
+  const buttonElement = formEditProfile.querySelector('.popup__button');
+
+  inputList.forEach(inputElement => {
+    inputElement.setCustomValidity('');
+    hideInputError(formEditProfile, inputElement, {
+      inputErrorClass: 'popup__input_type_error',
+      errorClass: 'popup__error_visible'
+    });
+  });
+
+  toggleButtonState(inputList, buttonElement, {
+    inactiveButtonClass: 'popup__button_disabled'
+  });
+
   openModal(popupTypeEdit);
 });
 
@@ -47,8 +62,22 @@ formAddCard.addEventListener('submit', (evt) => {
 
 //открытие формы новой карточки
 addButton.addEventListener('click', () => {
+  const inputList = Array.from(formAddCard.querySelectorAll('.popup__input'));
+  const buttonElement = formAddCard.querySelector('.popup__button');
+
+  inputList.forEach(inputElement => {
+    hideInputError(formAddCard, inputElement, {
+      inputErrorClass: 'popup__input_type_error',
+      errorClass: 'popup__error_visible'
+    });
+  });
+
+  toggleButtonState(inputList, buttonElement, {
+    inactiveButtonClass: 'popup__button_disabled'
+  });
+
   openModal(popupAddCard);
-});
+});;
 
 function handleCardClick(name, link) {
   popupImagePicture.src = link;
@@ -83,6 +112,7 @@ formEditProfile.addEventListener('submit', (evt) => {
 //ошибка
 function showInputError(formElement, inputElement, errorMessage, config) {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  if (!errorElement) return;
   inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(config.errorClass);
@@ -90,6 +120,7 @@ function showInputError(formElement, inputElement, errorMessage, config) {
 
 function hideInputError(formElement, inputElement, config) {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  if (!errorElement) return;
   inputElement.classList.remove(config.inputErrorClass);
   errorElement.textContent = '';
   errorElement.classList.remove(config.errorClass);
@@ -97,14 +128,12 @@ function hideInputError(formElement, inputElement, config) {
 
 //проверка валидности введенного текста
 function isValid(formElement, inputElement, config) {
-  const regex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
+  const errorMessage = inputElement.dataset.errorMessage;
 
-  if (inputElement.name === 'name' || inputElement.name === 'description') {
-    if (!regex.test(inputElement.value)) {
-      inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-    } else {
-      inputElement.setCustomValidity('');
-    }
+  if (inputElement.validity.valueMissing && errorMessage) {
+    inputElement.setCustomValidity(errorMessage);
+  } else {
+    inputElement.setCustomValidity('');
   }
 
   if (!inputElement.validity.valid) {
