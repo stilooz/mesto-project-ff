@@ -95,6 +95,9 @@ export const createCard = (cardData, onImageClick, userId) => {
 
   //кнопка лайка
   const likeButton = card.querySelector('.card__like-button');
+  if (cardData.likes.some(like => like._id === userId)) {
+    likeButton.classList.add('card__like-button_is-active');
+  }
   setLikeHandler(likeButton, cardData._id, likeCounter);
 
   return card;
