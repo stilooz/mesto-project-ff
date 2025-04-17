@@ -95,6 +95,9 @@ profileImageContainer.addEventListener('click', () => {
 // Обработчик отправки формы обновления аватара
 formAvatar.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  const submitButton = formAvatar.querySelector('.popup__button');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
   updateAvatar({ avatar: avatarLinkInput.value })
     .then((userData) => {
       profileImage.style.backgroundImage = `url(${userData.avatar})`;
@@ -102,6 +105,9 @@ formAvatar.addEventListener('submit', (evt) => {
     })
     .catch(err => {
       console.error('Ошибка при обновлении аватара:', err);
+    })
+    .finally(() => {
+      submitButton.textContent = originalText;
     });
 });
 
@@ -109,6 +115,9 @@ formAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const name = cardNameInput.value;
   const link = cardLinkInput.value;
+  const submitButton = formAddCard.querySelector('.popup__button');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
 
   addCard({ name, link })
     .then((cardData) => {
@@ -119,6 +128,9 @@ formAddCard.addEventListener('submit', (evt) => {
     })
     .catch((err) => {
       console.error('Ошибка при добавлении карточки:', err);
+    })
+    .finally(() => {
+      submitButton.textContent = originalText;
     });
 });
 //открытие формы новой карточки
@@ -163,6 +175,9 @@ popups.forEach((popup) => {
 // текст в попапе карандаш
 formEditProfile.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  const submitButton = formEditProfile.querySelector('.popup__button');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
 
   updateUserInfo({
     name: nameInput.value,
@@ -175,6 +190,9 @@ formEditProfile.addEventListener('submit', (evt) => {
     })
     .catch(err => {
       console.error('Ошибка при обновлении профиля:', err);
+    })
+    .finally(() => {
+      submitButton.textContent = originalText;
     });
 });
 
