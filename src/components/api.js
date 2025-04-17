@@ -75,4 +75,4 @@ export function updateAvatar({ avatar }) {
       }
       return Promise.reject(`Ошибка: ${res.status}`);
     });
-}
+};

@@ -35,6 +35,18 @@ const avatarLinkInput = formAvatar.elements['avatar'];
 const profileImage = document.querySelector('.profile__image');
 const avatarPopup = document.querySelector('.popup_type_avatar');
 
+// Добавление попапа подтверждения удаления карточки
+const popupConfirmDelete = document.querySelector('.popup_type_confirm');
+const popupConfirmCloseBtn = popupConfirmDelete.querySelector('.popup__close');
+
+popupConfirmCloseBtn.addEventListener('click', () => closeModal());
+
+popupConfirmDelete.addEventListener('click', (event) => {
+  if (event.target === popupConfirmDelete) {
+    closeModal();
+  }
+});
+
 // редактирование профиля
 profileEditButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;

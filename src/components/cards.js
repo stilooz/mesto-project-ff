@@ -28,13 +28,23 @@ export const initialCards = [
 //удаление карточки через корзину
 export const deleteCardHandler = (card) => {
   const deleteButtonCard = card.querySelector(".card__delete-button");
-  deleteButtonCard.addEventListener(
-    "click",
-    () => {
+  deleteButtonCard.addEventListener("click", () => {
+    const popupConfirm = document.querySelector('.popup_type_confirm');
+    const confirmForm = popupConfirm.querySelector('form');
+
+    const handleConfirm = (evt) => {
+      evt.preventDefault();
       card.remove();
-    },
-    { once: true }
-  );
+      confirmForm.removeEventListener('submit', handleConfirm);
+      closeModal(popupConfirm);
+    };
+
+    // Сбросить старый обработчик перед установкой нового
+    confirmForm.removeEventListener('submit', handleConfirm);
+    confirmForm.addEventListener('submit', handleConfirm);
+
+    popupConfirm.classList.add('popup_is-opened');
+  });
 };
 
 export const setLikeHandler = (button) => {
@@ -65,4 +75,3 @@ export const createCard = (name, link, onImageClick, likes = []) => {
 
   return card;
 };
-
