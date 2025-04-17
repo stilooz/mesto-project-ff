@@ -1,3 +1,4 @@
+import { closeModal } from './modal.js';
 export const initialCards = [
   {
     name: "Архыз",
