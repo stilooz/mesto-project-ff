@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import { initialCards, createCard } from '../components/cards.js';
+import { createCard } from '../components/cards.js';
 import { openModal, closeModal } from '../components/modal.js';
 import {
   enableValidation,
@@ -8,8 +8,7 @@ import {
   showInputError,
   hideInputError
 } from '../components/validation.js';
-import { getUserInfo } from '../components/api.js';
-import { getInitialCards } from '../components/api.js';
+import { getUserInfo, getInitialCards, updateUserInfo, addCard } from '../components/api.js';
 // переменные карточек
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
@@ -31,9 +30,6 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupCloseButtons = document.querySelectorAll('.popup__close')
 const popups = document.querySelectorAll('.popup')
-
-initialCards.forEach((card) =>
-  placesList.append(createCard(card.name, card.link, handleCardClick)));
 
 //редактирование профиля
 profileEditButton.addEventListener('click', () => {
@@ -62,12 +58,18 @@ formAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const name = cardNameInput.value;
   const link = cardLinkInput.value;
-  const newCard = createCard(name, link, handleCardClick);
-  placesList.prepend(newCard);
-  closeModal();
-  formAddCard.reset();
-});
 
+  addCard({ name, link })
+    .then((cardData) => {
+      const newCard = createCard(cardData.name, cardData.link, handleCardClick);
+      placesList.prepend(newCard);
+      closeModal();
+      formAddCard.reset();
+    })
+    .catch((err) => {
+      console.error('Ошибка при добавлении карточки:', err);
+    });
+});
 //открытие формы новой карточки
 addButton.addEventListener('click', () => {
   const inputList = Array.from(formAddCard.querySelectorAll('.popup__input'));
@@ -111,10 +113,18 @@ popups.forEach((popup) => {
 formEditProfile.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
-
-  closeModal();
+  updateUserInfo({
+    name: nameInput.value,
+    about: jobInput.value
+  })
+    .then((userData) => {
+      profileTitle.textContent = userData.name;
+      profileDescription.textContent = userData.about;
+      closeModal();
+    })
+    .catch(err => {
+      console.error('Ошибка при обновлении профиля:', err);
+    });
 });
 
 enableValidation({
@@ -126,23 +136,16 @@ enableValidation({
   errorClass: 'popup__error_visible'
 });
 
-getUserInfo()
-  .then(data => {
-    profileTitle.textContent = data.name;
-    profileDescription.textContent = data.about;
-    document.querySelector('.profile__image').style.backgroundImage = `url(${data.avatar})`;
-  })
-  .catch(err => {
-    console.error('Ошибка при загрузке данных пользователя:', err);
-  });
-
-getInitialCards()
-  .then(cards => {
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userData, cards]) => {
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
     cards.forEach(card => {
       const cardElement = createCard(card.name, card.link, handleCardClick);
       placesList.append(cardElement);
     });
   })
   .catch(err => {
-    console.error('Ошибка при загрузке карточек:', err);
+    console.error('Ошибка при загрузке данных:', err);
   });
