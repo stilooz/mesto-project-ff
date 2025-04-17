@@ -1,5 +1,5 @@
 import { closeModal } from './modal.js';
-import { deleteCard } from './api.js';
+import { deleteCard, likeCard, unlikeCard } from './api.js';
 export const initialCards = [
   {
     name: "Архыз",
@@ -54,9 +54,19 @@ export const deleteCardHandler = (card, cardId) => {
   });
 };
 
-export const setLikeHandler = (button) => {
+export const setLikeHandler = (button, cardId, likeCounter) => {
   button.addEventListener('click', () => {
-    button.classList.toggle('card__like-button_is-active');
+    const isLiked = button.classList.contains('card__like-button_is-active');
+    const action = isLiked ? unlikeCard : likeCard;
+
+    action(cardId)
+      .then(card => {
+        button.classList.toggle('card__like-button_is-active');
+        likeCounter.textContent = card.likes.length;
+      })
+      .catch(err => {
+        console.error('Ошибка при изменении лайка:', err);
+      });
   });
 };
 
@@ -85,7 +95,7 @@ export const createCard = (cardData, onImageClick, userId) => {
 
   //кнопка лайка
   const likeButton = card.querySelector('.card__like-button');
-  setLikeHandler(likeButton);
+  setLikeHandler(likeButton, cardData._id, likeCounter);
 
   return card;
 };

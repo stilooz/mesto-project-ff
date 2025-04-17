@@ -90,3 +90,22 @@ export function deleteCard(cardId) {
       return Promise.reject(`Ошибка: ${res.status}`);
     });
 }
+export function likeCard(cardId) {
+  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-36/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: {
+      authorization: '1b90838c-6394-4588-b4b1-865db972e903'
+    }
+  })
+    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+}
+
+export function unlikeCard(cardId) {
+  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-36/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: '1b90838c-6394-4588-b4b1-865db972e903'
+    }
+  })
+    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+}
