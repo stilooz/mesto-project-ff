@@ -46,7 +46,6 @@ export const deleteCardHandler = (card, cardId) => {
         });
     };
 
-    // Сбросить старый обработчик перед установкой нового
     confirmForm.removeEventListener('submit', handleConfirm);
     confirmForm.addEventListener('submit', handleConfirm);
 

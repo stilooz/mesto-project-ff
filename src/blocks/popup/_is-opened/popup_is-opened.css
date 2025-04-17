@@ -5,3 +5,11 @@
   pointer-events: all;
   transition: visibility 0s, opacity 0.6s;
 }
+
+
+.popup_type_confirm .popup__content {
+  max-width: 26.875rem;/* 430px */
+  min-height: 11.3125rem;/* 181px */
+  padding: 2.125rem 2.25rem 2.25rem;/* 34px 36px 36px */
+  box-sizing: border-box;
+}

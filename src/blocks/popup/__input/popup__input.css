@@ -15,11 +15,11 @@
 }
 
 .popup__error {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: red;
-  line-height: 15px;
-  min-height: 30px;
-  margin-top: 5px;
+  line-height: 0.9375rem;
+  min-height: 1.875rem;
+  margin-top: 0.3125rem;
   display: block;
 }
 

@@ -35,7 +35,6 @@ const formAvatar = document.forms['update-avatar'];
 const avatarLinkInput = formAvatar.elements['avatar'];
 const profileImage = document.querySelector('.profile__image');
 const avatarPopup = document.querySelector('.popup_type_avatar');
-
 // Добавление попапа подтверждения удаления карточки
 const popupConfirmDelete = document.querySelector('.popup_type_confirm');
 const popupConfirmCloseBtn = popupConfirmDelete.querySelector('.popup__close');
