@@ -44,12 +44,15 @@ export const setLikeHandler = (button) => {
 };
 
 //создание карточки
-export const createCard = (name, link, onImageClick) => {
+export const createCard = (name, link, onImageClick, likes = []) => {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   deleteCardHandler(card);
   const cardImage = card.querySelector('.card__image');
   card.querySelector(".card__title").textContent = name;
+
+  const likeCounter = card.querySelector('.card__like-count');
+  likeCounter.textContent = likes.length;
   cardImage.setAttribute("src", link);
   cardImage.setAttribute("alt", `фотография ${name}`);
   cardImage.addEventListener('click', () => {

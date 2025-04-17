@@ -61,7 +61,7 @@ formAddCard.addEventListener('submit', (evt) => {
 
   addCard({ name, link })
     .then((cardData) => {
-      const newCard = createCard(cardData.name, cardData.link, handleCardClick);
+      const newCard = createCard(cardData.name, cardData.link, handleCardClick, cardData.likes);
       placesList.prepend(newCard);
       closeModal();
       formAddCard.reset();
@@ -142,7 +142,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     profileDescription.textContent = userData.about;
     document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
     cards.forEach(card => {
-      const cardElement = createCard(card.name, card.link, handleCardClick);
+      const cardElement = createCard(card.name, card.link, handleCardClick, card.likes);
       placesList.append(cardElement);
     });
   })
