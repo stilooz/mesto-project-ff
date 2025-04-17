@@ -8,8 +8,8 @@ import {
   showInputError,
   hideInputError
 } from '../components/validation.js';
-import { getUserInfo, getInitialCards, updateUserInfo, addCard } from '../components/api.js';
-// переменные карточек
+import { getUserInfo, getInitialCards, updateUserInfo, addCard, updateAvatar } from '../components/api.js';
+// переменные карточек и аватара
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
@@ -30,8 +30,12 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupCloseButtons = document.querySelectorAll('.popup__close')
 const popups = document.querySelectorAll('.popup')
+const formAvatar = document.forms['update-avatar'];
+const avatarLinkInput = formAvatar.elements['avatar'];
+const profileImage = document.querySelector('.profile__image');
+const avatarPopup = document.querySelector('.popup_type_avatar');
 
-//редактирование профиля
+// редактирование профиля
 profileEditButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
@@ -52,6 +56,40 @@ profileEditButton.addEventListener('click', () => {
   });
 
   openModal(popupTypeEdit);
+});
+
+// Обработчик открытия формы обновления аватара
+const profileImageContainer = document.querySelector('.profile__image');
+profileImageContainer.addEventListener('click', () => {
+  const inputList = Array.from(formAvatar.querySelectorAll('.popup__input'));
+  const buttonElement = formAvatar.querySelector('.popup__button');
+
+  inputList.forEach(inputElement => {
+    hideInputError(formAvatar, inputElement, {
+      inputErrorClass: 'popup__input_type_error',
+      errorClass: 'popup__error_visible'
+    });
+  });
+
+  toggleButtonState(inputList, buttonElement, {
+    inactiveButtonClass: 'popup__button_disabled'
+  });
+
+  formAvatar.reset();
+  openModal(avatarPopup);
+});
+
+// Обработчик отправки формы обновления аватара
+formAvatar.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  updateAvatar({ avatar: avatarLinkInput.value })
+    .then((userData) => {
+      profileImage.style.backgroundImage = `url(${userData.avatar})`;
+      closeModal();
+    })
+    .catch(err => {
+      console.error('Ошибка при обновлении аватара:', err);
+    });
 });
 
 formAddCard.addEventListener('submit', (evt) => {
