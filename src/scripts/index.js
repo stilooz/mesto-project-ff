@@ -8,8 +8,9 @@ import {
   showInputError,
   hideInputError
 } from '../components/validation.js';
-import { getUserInfo, getInitialCards, updateUserInfo, addCard, updateAvatar } from '../components/api.js';
+import { getUserInfo, getInitialCards, updateUserInfo, addCard, updateAvatar, deleteCard } from '../components/api.js';
 // переменные карточек и аватара
+let userId;
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
@@ -111,7 +112,7 @@ formAddCard.addEventListener('submit', (evt) => {
 
   addCard({ name, link })
     .then((cardData) => {
-      const newCard = createCard(cardData.name, cardData.link, handleCardClick, cardData.likes);
+      const newCard = createCard(cardData, handleCardClick, userId);
       placesList.prepend(newCard);
       closeModal();
       formAddCard.reset();
@@ -191,8 +192,9 @@ Promise.all([getUserInfo(), getInitialCards()])
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
     document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
+    userId = userData._id;
     cards.forEach(card => {
-      const cardElement = createCard(card.name, card.link, handleCardClick, card.likes);
+      const cardElement = createCard(card, handleCardClick, userId);
       placesList.append(cardElement);
     });
   })

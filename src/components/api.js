@@ -76,3 +76,17 @@ export function updateAvatar({ avatar }) {
       return Promise.reject(`Ошибка: ${res.status}`);
     });
 };
+export function deleteCard(cardId) {
+  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-36/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: '1b90838c-6394-4588-b4b1-865db972e903'
+    }
+  })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+}

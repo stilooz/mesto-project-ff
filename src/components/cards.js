@@ -1,4 +1,5 @@
 import { closeModal } from './modal.js';
+import { deleteCard } from './api.js';
 export const initialCards = [
   {
     name: "Архыз",
@@ -27,7 +28,7 @@ export const initialCards = [
 ];
 
 //удаление карточки через корзину
-export const deleteCardHandler = (card) => {
+export const deleteCardHandler = (card, cardId) => {
   const deleteButtonCard = card.querySelector(".card__delete-button");
   deleteButtonCard.addEventListener("click", () => {
     const popupConfirm = document.querySelector('.popup_type_confirm');
@@ -35,9 +36,14 @@ export const deleteCardHandler = (card) => {
 
     const handleConfirm = (evt) => {
       evt.preventDefault();
-      card.remove();
-      confirmForm.removeEventListener('submit', handleConfirm);
-      closeModal(popupConfirm);
+      deleteCard(cardId)
+        .then(() => {
+          card.remove();
+          closeModal(popupConfirm);
+        })
+        .catch(err => {
+          console.error('Ошибка при удалении карточки:', err);
+        });
     };
 
     // Сбросить старый обработчик перед установкой нового
@@ -55,19 +61,26 @@ export const setLikeHandler = (button) => {
 };
 
 //создание карточки
-export const createCard = (name, link, onImageClick, likes = []) => {
+export const createCard = (cardData, onImageClick, userId) => {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.querySelector(".card").cloneNode(true);
-  deleteCardHandler(card);
+  if (cardData.owner && cardData.owner._id === userId) {
+    const deleteButton = card.querySelector('.card__delete-button');
+    deleteButton.style.display = 'block';
+    deleteCardHandler(card, cardData._id);
+  } else {
+    const deleteButton = card.querySelector('.card__delete-button');
+    deleteButton.remove();
+  }
   const cardImage = card.querySelector('.card__image');
-  card.querySelector(".card__title").textContent = name;
+  card.querySelector(".card__title").textContent = cardData.name;
 
   const likeCounter = card.querySelector('.card__like-count');
-  likeCounter.textContent = likes.length;
-  cardImage.setAttribute("src", link);
-  cardImage.setAttribute("alt", `фотография ${name}`);
+  likeCounter.textContent = cardData.likes.length;
+  cardImage.setAttribute("src", cardData.link);
+  cardImage.setAttribute("alt", `фотография ${cardData.name}`);
   cardImage.addEventListener('click', () => {
-    onImageClick(name, link);
+    onImageClick(cardData.name, cardData.link);
   });
 
   //кнопка лайка
