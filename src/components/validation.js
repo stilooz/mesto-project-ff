@@ -16,11 +16,18 @@ export function hideInputError(formElement, inputElement, config) {
 
 export function isValid(formElement, inputElement, config) {
   const errorMessage = inputElement.dataset.errorMessage;
+  const pattern = /^[А-ЯA-ZЁёа-яa-z\s-]+$/i;
+  const fieldName = inputElement.name;
 
-  if (inputElement.validity.valueMissing && errorMessage) {
+  inputElement.setCustomValidity('');
+
+  if (inputElement.validity.valueMissing) {
     inputElement.setCustomValidity(errorMessage);
-  } else {
-    inputElement.setCustomValidity('');
+  } else if (
+    (fieldName === 'name' || fieldName === 'description' || fieldName === 'place-name') &&
+    !pattern.test(inputElement.value)
+  ) {
+    inputElement.setCustomValidity(errorMessage);
   }
 
   if (!inputElement.validity.valid) {
