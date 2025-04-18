@@ -85,3 +85,19 @@ export function unlikeCard(cardId) {
   })
     .then(checkResponse);
 }
+
+export const setLikeHandler = (button, cardId, likeCounter) => {
+  button.addEventListener('click', () => {
+    const isLiked = button.classList.contains('card__like-button_is-active');
+    const action = isLiked ? unlikeCard : likeCard;
+
+    action(cardId)
+      .then(card => {
+        button.classList.toggle('card__like-button_is-active');
+        likeCounter.textContent = card.likes.length;
+      })
+      .catch(err => {
+        console.error('Ошибка при изменении лайка:', err);
+      });
+  });
+};

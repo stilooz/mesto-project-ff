@@ -19,17 +19,6 @@ export function isValid(formElement, inputElement, config) {
   const pattern = /^[А-ЯA-ZЁёа-яa-z\s-]+$/i;
   const fieldName = inputElement.name;
 
-  inputElement.setCustomValidity('');
-
-  if (inputElement.validity.valueMissing) {
-    inputElement.setCustomValidity(errorMessage);
-  } else if (
-    (fieldName === 'name' || fieldName === 'description' || fieldName === 'place-name') &&
-    !pattern.test(inputElement.value)
-  ) {
-    inputElement.setCustomValidity(errorMessage);
-  }
-
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, config);
   } else {

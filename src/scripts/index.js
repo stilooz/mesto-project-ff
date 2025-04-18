@@ -9,8 +9,12 @@ import {
   hideInputError
 } from '../components/validation.js';
 import { getUserInfo, getInitialCards, updateUserInfo, addCard, updateAvatar, deleteCard } from '../components/api.js';
+
 // переменные карточек и аватара
 let userId;
+let cardToDelete = null;
+let cardIdToDelete = null;
+
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
@@ -38,6 +42,7 @@ const avatarPopup = document.querySelector('.popup_type_avatar');
 // Добавление попапа подтверждения удаления карточки
 const popupConfirmDelete = document.querySelector('.popup_type_confirm');
 const popupConfirmCloseBtn = popupConfirmDelete.querySelector('.popup__close');
+const popupConfirmForm = popupConfirmDelete.querySelector('form');
 
 popupConfirmCloseBtn.addEventListener('click', () => closeModal());
 
@@ -45,6 +50,24 @@ popupConfirmDelete.addEventListener('click', (event) => {
   if (event.target === popupConfirmDelete) {
     closeModal();
   }
+});
+
+function handleDelete(card, cardId) {
+  cardToDelete = card;
+  cardIdToDelete = cardId;
+  openModal(popupConfirmDelete);
+}
+
+popupConfirmForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  deleteCard(cardIdToDelete)
+    .then(() => {
+      cardToDelete.remove();
+      closeModal(popupConfirmDelete);
+    })
+    .catch(err => {
+      console.error('Ошибка при удалении карточки:', err);
+    });
 });
 
 // редактирование профиля
@@ -120,7 +143,7 @@ formAddCard.addEventListener('submit', (evt) => {
 
   addCard({ name, link })
     .then((cardData) => {
-      const newCard = createCard(cardData, handleCardClick, userId);
+      const newCard = createCard(cardData, handleCardClick, userId, handleDelete);
       placesList.prepend(newCard);
       closeModal();
       formAddCard.reset();
@@ -157,6 +180,7 @@ function handleCardClick(name, link) {
   popupImageCaption.textContent = name;
   openModal(popupImage);
 }
+
 //закрытие попапов
 popupCloseButtons.forEach((button) => {
   button.addEventListener('click', closeModal);
@@ -211,7 +235,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
     userId = userData._id;
     cards.forEach(card => {
-      const cardElement = createCard(card, handleCardClick, userId);
+      const cardElement = createCard(card, handleCardClick, userId, handleDelete);
       placesList.append(cardElement);
     });
   })

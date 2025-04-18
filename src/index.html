@@ -63,10 +63,11 @@
 							type="text"
 							name="name"
 							class="popup__input popup__input_type_name"
-							placeholder="Имя"
-							required
-							data-error-message="Разрешены только буквы, пробел и дефис"
-						/>
+						placeholder="Имя"
+						required
+						pattern="^[А-ЯA-ZЁёа-яa-z\\s-]+$"
+						data-error-message="Разрешены только буквы, пробел и дефис"
+					/>
 						<span
 							class="popup__error"
 							id="name-input-error"
@@ -76,10 +77,11 @@
 							type="text"
 							name="description"
 							class="popup__input popup__input_type_description"
-							placeholder="Занятие"
-							required
-							data-error-message="Разрешены только буквы, пробел и дефис"
-						/>
+						placeholder="Занятие"
+						required
+						pattern="^[А-ЯA-ZЁёа-яa-z\\s-]+$"
+						data-error-message="Разрешены только буквы, пробел и дефис"
+					/>
 						<span
 							class="popup__error"
 							id="description-input-error"
@@ -109,10 +111,11 @@
 							type="text"
 							name="place-name"
 							class="popup__input popup__input_type_card-name"
-							placeholder="Название"
-							required
-							data-error-message="Вы пропустили это поле"
-						/>
+						placeholder="Название"
+						required
+						pattern="^[А-ЯA-ZЁёа-яa-z\\s-]+$"
+						data-error-message="Вы пропустили это поле"
+					/>
 						<span
 							class="popup__error"
 							id="place-name-input-error"
@@ -195,6 +198,7 @@
 				<button
 					type="button"
 					class="card__delete-button"
+					style="display: none;"
 				></button>
 				<div class="card__description">
 					<h2 class="card__title"></h2>
