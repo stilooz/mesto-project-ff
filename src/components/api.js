@@ -101,3 +101,15 @@ export const setLikeHandler = (button, cardId, likeCounter) => {
       });
   });
 };
+
+export function resetValidation(formElement, config) {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
+
+  inputList.forEach((inputElement) => {
+    inputElement.setCustomValidity('');
+    hideInputError(formElement, inputElement, config);
+  });
+
+  toggleButtonState(inputList, buttonElement, config);
+}

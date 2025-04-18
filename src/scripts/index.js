@@ -6,7 +6,8 @@ import {
   isValid,
   toggleButtonState,
   showInputError,
-  hideInputError
+  hideInputError,
+  resetValidation
 } from '../components/validation.js';
 import { getUserInfo, getInitialCards, updateUserInfo, addCard, updateAvatar, deleteCard } from '../components/api.js';
 
@@ -75,20 +76,7 @@ profileEditButton.addEventListener('click', () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
 
-  const inputList = Array.from(formEditProfile.querySelectorAll('.popup__input'));
-  const buttonElement = formEditProfile.querySelector('.popup__button');
-
-  inputList.forEach(inputElement => {
-    inputElement.setCustomValidity('');
-    hideInputError(formEditProfile, inputElement, {
-      inputErrorClass: 'popup__input_type_error',
-      errorClass: 'popup__error_visible'
-    });
-  });
-
-  toggleButtonState(inputList, buttonElement, {
-    inactiveButtonClass: 'popup__button_disabled'
-  });
+  resetValidation(formEditProfile, validationConfig);
 
   openModal(popupTypeEdit);
 });
@@ -96,19 +84,7 @@ profileEditButton.addEventListener('click', () => {
 // Обработчик открытия формы обновления аватара
 const profileImageContainer = document.querySelector('.profile__image');
 profileImageContainer.addEventListener('click', () => {
-  const inputList = Array.from(formAvatar.querySelectorAll('.popup__input'));
-  const buttonElement = formAvatar.querySelector('.popup__button');
-
-  inputList.forEach(inputElement => {
-    hideInputError(formAvatar, inputElement, {
-      inputErrorClass: 'popup__input_type_error',
-      errorClass: 'popup__error_visible'
-    });
-  });
-
-  toggleButtonState(inputList, buttonElement, {
-    inactiveButtonClass: 'popup__button_disabled'
-  });
+  resetValidation(formAvatar, validationConfig);
 
   formAvatar.reset();
   openModal(avatarPopup);
@@ -157,19 +133,7 @@ formAddCard.addEventListener('submit', (evt) => {
 });
 //открытие формы новой карточки
 addButton.addEventListener('click', () => {
-  const inputList = Array.from(formAddCard.querySelectorAll('.popup__input'));
-  const buttonElement = formAddCard.querySelector('.popup__button');
-
-  inputList.forEach(inputElement => {
-    hideInputError(formAddCard, inputElement, {
-      inputErrorClass: 'popup__input_type_error',
-      errorClass: 'popup__error_visible'
-    });
-  });
-
-  toggleButtonState(inputList, buttonElement, {
-    inactiveButtonClass: 'popup__button_disabled'
-  });
+  resetValidation(formAddCard, validationConfig);
 
   openModal(popupAddCard);
 });;
@@ -219,14 +183,16 @@ formEditProfile.addEventListener('submit', (evt) => {
     });
 });
 
-enableValidation({
+const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
-});
+};
+
+enableValidation(validationConfig);
 
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cards]) => {
