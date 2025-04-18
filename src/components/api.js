@@ -101,10 +101,10 @@ export function likeCard(cardId) {
 }
 
 export function unlikeCard(cardId) {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-36/cards/likes/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: {
-      authorization: '1b90838c-6394-4588-b4b1-865db972e903'
+      authorization: config.headers.authorization
     }
   })
     .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
