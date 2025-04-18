@@ -6,7 +6,6 @@
   "scripts": {
     "start": "webpack serve --open --mode development",
     "build": "webpack --mode production",
-    "start": "webpack serve & open -a 'Google Chrome' http://localhost:8080",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
