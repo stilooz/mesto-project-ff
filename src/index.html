@@ -65,7 +65,9 @@
 							class="popup__input popup__input_type_name"
 						placeholder="Имя"
 						required
-						pattern="^[А-ЯA-ZЁёа-яa-z\\s-]+$"
+						minlength="2"
+						maxlength="40"
+						pattern="[А-Яа-яЁёA-Za-z\s\-]"
 						data-error-message="Разрешены только буквы, пробел и дефис"
 					/>
 						<span
@@ -79,7 +81,9 @@
 							class="popup__input popup__input_type_description"
 						placeholder="Занятие"
 						required
-						pattern="^[А-ЯA-ZЁёа-яa-z\\s-]+$"
+						minlength="2"
+						maxlength="200"
+						pattern="[А-Яа-яЁёA-Za-z\s\-]"
 						data-error-message="Разрешены только буквы, пробел и дефис"
 					/>
 						<span
@@ -113,7 +117,9 @@
 							class="popup__input popup__input_type_card-name"
 						placeholder="Название"
 						required
-						pattern="^[А-ЯA-ZЁёа-яa-z\\s-]+$"
+						minlength="2"
+						maxlength="30"
+						pattern="[А-Яа-яЁёA-Za-z\s\-]"
 						data-error-message="Вы пропустили это поле"
 					/>
 						<span
