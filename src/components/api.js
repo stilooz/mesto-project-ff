@@ -1,15 +1,16 @@
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
 export function getUserInfo() {
   return fetch('https://mesto.nomoreparties.co/v1/wff-cohort-36/users/me', {
     headers: {
       authorization: '1b90838c-6394-4588-b4b1-865db972e903'
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 };
 
 export function getInitialCards() {
@@ -18,12 +19,7 @@ export function getInitialCards() {
       authorization: '1b90838c-6394-4588-b4b1-865db972e903'
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 };
 
 export function updateUserInfo({ name, about }) {
@@ -35,12 +31,7 @@ export function updateUserInfo({ name, about }) {
     },
     body: JSON.stringify({ name, about })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 }
 
 export function addCard({ name, link }) {
@@ -52,12 +43,7 @@ export function addCard({ name, link }) {
     },
     body: JSON.stringify({ name, link })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 }
 
 export function updateAvatar({ avatar }) {
@@ -69,12 +55,7 @@ export function updateAvatar({ avatar }) {
     },
     body: JSON.stringify({ avatar })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 };
 export function deleteCard(cardId) {
   return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-36/cards/${cardId}`, {
@@ -83,12 +64,7 @@ export function deleteCard(cardId) {
       authorization: '1b90838c-6394-4588-b4b1-865db972e903'
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 }
 export function likeCard(cardId) {
   return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-36/cards/likes/${cardId}`, {
@@ -97,7 +73,7 @@ export function likeCard(cardId) {
       authorization: '1b90838c-6394-4588-b4b1-865db972e903'
     }
   })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+    .then(checkResponse);
 }
 
 export function unlikeCard(cardId) {
@@ -107,5 +83,5 @@ export function unlikeCard(cardId) {
       authorization: config.headers.authorization
     }
   })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+    .then(checkResponse);
 }
