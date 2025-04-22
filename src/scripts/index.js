@@ -16,6 +16,18 @@ let userId;
 let cardToDelete = null;
 let cardIdToDelete = null;
 
+function handleConfirmDelete(evt) {
+  evt.preventDefault();
+  deleteCard(cardIdToDelete)
+    .then(() => {
+      cardToDelete.remove();
+      closeModal(popupConfirmDelete);
+    })
+    .catch(err => {
+      console.error('Ошибка при удалении карточки:', err);
+    });
+}
+
 const placesList = document.querySelector(".places__list");
 const formAddCard = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
@@ -59,17 +71,7 @@ function handleDelete(card, cardId) {
   openModal(popupConfirmDelete);
 }
 
-popupConfirmForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  deleteCard(cardIdToDelete)
-    .then(() => {
-      cardToDelete.remove();
-      closeModal(popupConfirmDelete);
-    })
-    .catch(err => {
-      console.error('Ошибка при удалении карточки:', err);
-    });
-});
+popupConfirmForm.addEventListener('submit', handleConfirmDelete);
 
 // редактирование профиля
 profileEditButton.addEventListener('click', () => {
