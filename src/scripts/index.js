@@ -89,6 +89,9 @@ profileImageContainer.addEventListener('click', () => {
   resetValidation(formAvatar, validationConfig);
 
   formAvatar.reset();
+  const inputList = Array.from(formAvatar.querySelectorAll(validationConfig.inputSelector));
+  const buttonElement = formAvatar.querySelector(validationConfig.submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, validationConfig);
   openModal(avatarPopup);
 });
 
