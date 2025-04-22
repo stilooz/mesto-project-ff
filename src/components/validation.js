@@ -15,16 +15,9 @@ export function hideInputError(formElement, inputElement, config) {
 };
 
 export function isValid(formElement, inputElement, config) {
-  const errorMessage = inputElement.dataset.errorMessage;
   inputElement.setCustomValidity('');
-
-  if (
-    inputElement.validity.patternMismatch ||
-    inputElement.validity.tooShort ||
-    inputElement.validity.tooLong ||
-    inputElement.validity.valueMissing
-  ) {
-    inputElement.setCustomValidity(errorMessage);
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   }
 
   if (!inputElement.validity.valid) {
