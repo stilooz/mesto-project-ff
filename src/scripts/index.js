@@ -86,12 +86,8 @@ profileEditButton.addEventListener('click', () => {
 // Обработчик открытия формы обновления аватара
 const profileImageContainer = document.querySelector('.profile__image');
 profileImageContainer.addEventListener('click', () => {
-  resetValidation(formAvatar, validationConfig);
-
   formAvatar.reset();
-  const inputList = Array.from(formAvatar.querySelectorAll(validationConfig.inputSelector));
-  const buttonElement = formAvatar.querySelector(validationConfig.submitButtonSelector);
-  toggleButtonState(inputList, buttonElement, validationConfig);
+  resetValidation(formAvatar, validationConfig);
   openModal(avatarPopup);
 });
 
