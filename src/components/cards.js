@@ -2,7 +2,7 @@
 import { likeCard, unlikeCard } from './api.js';
 
 //создание карточки
-export const createCard = (cardData, onImageClick, userId, onDelete) => {
+export const createCard = (cardData, onImageClick, userId, onDelete, onLike) => {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   if (cardData.owner && cardData.owner._id === userId) {
@@ -32,18 +32,22 @@ export const createCard = (cardData, onImageClick, userId, onDelete) => {
     likeButton.classList.add('card__like-button_is-active');
   }
   likeButton.addEventListener('click', () => {
-    const isLiked = likeButton.classList.contains('card__like-button_is-active');
-    const action = isLiked ? unlikeCard : likeCard;
-
-    action(cardData._id)
-      .then(card => {
-        likeButton.classList.toggle('card__like-button_is-active');
-        likeCounter.textContent = card.likes.length;
-      })
-      .catch(err => {
-        console.error('Ошибка лайка:', err);
-      });
+    onLike(likeButton, cardData._id, likeCounter);
   });
 
   return card;
+};
+
+export const handleLike = (button, cardId, counter) => {
+  const liked = button.classList.contains('card__like-button_is-active');
+  const action = liked ? unlikeCard : likeCard;
+
+  action(cardId)
+    .then(card => {
+      button.classList.toggle('card__like-button_is-active');
+      counter.textContent = card.likes.length;
+    })
+    .catch(err => {
+      console.error('Ошибка лайка:', err);
+    });
 };

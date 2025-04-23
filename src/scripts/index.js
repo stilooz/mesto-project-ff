@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import { createCard } from '../components/cards.js';
+import { createCard, handleLike } from '../components/cards.js';
 import { openModal, closeModal } from '../components/modal.js';
 import {
   enableValidation,
@@ -124,7 +124,7 @@ formAddCard.addEventListener('submit', (evt) => {
 
   addCard({ name, link })
     .then((cardData) => {
-      const newCard = createCard(cardData, handleCardClick, userId, handleDelete);
+      const newCard = createCard(cardData, handleCardClick, userId, handleDelete, handleLike);
       placesList.prepend(newCard);
       closeModal();
       formAddCard.reset();
@@ -206,7 +206,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
     userId = userData._id;
     cards.forEach(card => {
-      const cardElement = createCard(card, handleCardClick, userId, handleDelete);
+      const cardElement = createCard(card, handleCardClick, userId, handleDelete, handleLike);
       placesList.append(cardElement);
     });
   })
